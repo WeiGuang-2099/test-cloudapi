@@ -31,10 +31,20 @@ gcloud projects add-iam-policy-binding ${PROJECT_ID} \
     --member="serviceAccount:${SA_EMAIL}" \
     --role="roles/run.admin"
 
-# 授予 Storage Admin 权限（用于访问 Container Registry）
+# 授予 Storage Admin 权限（用于 GCR/Container Registry 推送）
 gcloud projects add-iam-policy-binding ${PROJECT_ID} \
     --member="serviceAccount:${SA_EMAIL}" \
     --role="roles/storage.admin"
+
+# 授予 Artifact Registry 写入权限（推送镜像必需）
+gcloud projects add-iam-policy-binding ${PROJECT_ID} \
+    --member="serviceAccount:${SA_EMAIL}" \
+    --role="roles/artifactregistry.writer"
+
+# 授予 Artifact Registry 管理员权限（首次推送时自动创建仓库需要 createOnPush）
+gcloud projects add-iam-policy-binding ${PROJECT_ID} \
+    --member="serviceAccount:${SA_EMAIL}" \
+    --role="roles/artifactregistry.admin"
 
 # 授予 Service Account User 权限
 gcloud projects add-iam-policy-binding ${PROJECT_ID} \
@@ -54,7 +64,12 @@ gcloud iam service-accounts keys create key.json \
 
 ## 步骤 2: 启用必要的 GCP API
 
+**重要：** GitHub Actions 的 `setup-gcloud` 需要 Cloud Resource Manager API，否则会报错 "does not have permission to access projects instance"。
+
 ```bash
+# 必须先启用 Cloud Resource Manager API（setup-gcloud 依赖它）
+gcloud services enable cloudresourcemanager.googleapis.com
+
 # 启用 Cloud Run API
 gcloud services enable run.googleapis.com
 
@@ -64,6 +79,9 @@ gcloud services enable containerregistry.googleapis.com
 # 启用 Cloud Build API（可选，用于更快的构建）
 gcloud services enable cloudbuild.googleapis.com
 ```
+
+或在浏览器中启用： [Cloud Resource Manager API](https://console.developers.google.com/apis/api/cloudresourcemanager.googleapis.com/overview)，
+选择你的项目后点击「启用」。
 
 ## 步骤 3: 在 GitHub 设置 Secrets
 
@@ -75,7 +93,7 @@ gcloud services enable cloudbuild.googleapis.com
 
 | Secret 名称 | 值 | 说明 |
 |------------|-----|------|
-| `GCP_PROJECT_ID` | 你的 GCP 项目 ID | 例如：`my-project-123456` |
+| `GCP_PROJECT_ID` | 你的 GCP **项目 ID**（英文+数字，如 `my-project-123`） | 必须是项目 ID，不能是项目名称或项目编号。在 GCP 控制台「项目设置」中查看。 |
 | `GCP_SA_KEY` | 服务账号密钥的完整 JSON 内容 | 从 `key.json` 复制完整内容 |
 
 ### 如何复制服务账号密钥：
