@@ -76,12 +76,34 @@ gcloud services enable run.googleapis.com
 # 启用 Container Registry API
 gcloud services enable containerregistry.googleapis.com
 
+# 启用 Artifact Registry API（workflow 已改用 Artifact Registry 推送镜像）
+gcloud services enable artifactregistry.googleapis.com
+
 # 启用 Cloud Build API（可选，用于更快的构建）
 gcloud services enable cloudbuild.googleapis.com
 ```
 
 或在浏览器中启用： [Cloud Resource Manager API](https://console.developers.google.com/apis/api/cloudresourcemanager.googleapis.com/overview)，
 选择你的项目后点击「启用」。
+
+## 步骤 2.5: 创建 Artifact Registry 仓库（必做一次）
+
+workflow 使用 Artifact Registry 推送镜像，需先手动创建一个仓库，否则会报错。
+
+**在 GCP 网页上操作：**
+
+1. 打开 [Artifact Registry](https://console.cloud.google.com/artifacts)
+2. 确认左上角选对项目（如 `plasma-streamer-448423-a3`）
+3. 点击 **「创建仓库」**
+4. 填写：
+   - **名称**：`cloud-run`（必须与 workflow 里 `AR_REPO` 一致）
+   - **格式**：Docker
+   - **模式**：标准
+   - **位置类型**：区域
+   - **区域**：asia-east1（与 workflow 里 `REGION` 一致）
+5. 点击 **「创建」**
+
+完成后无需再改，之后每次部署都会往这个仓库推送镜像。
 
 ## 步骤 3: 在 GitHub 设置 Secrets
 
