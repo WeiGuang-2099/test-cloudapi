@@ -120,7 +120,7 @@ chmod +x deploy.sh
 # 设置变量
 PROJECT_ID="your-project-id"
 SERVICE_NAME="parse-api"
-REGION="asia-east1"
+REGION="australia-southeast1"
 
 # 构建并推送镜像
 docker build -t gcr.io/${PROJECT_ID}/${SERVICE_NAME} .
@@ -277,7 +277,7 @@ Cloud Run 采用按使用量计费：
 ```bash
 gcloud run deploy parse-api \
   --image gcr.io/${PROJECT_ID}/parse-api \
-  --region asia-east1 \
+  --region australia-southeast1 \
   --no-allow-unauthenticated
 ```
 
@@ -350,7 +350,7 @@ docker system prune -a
 
 ```bash
 # 检查日志
-gcloud run services logs read parse-api --region=asia-east1
+gcloud run services logs read parse-api --region=australia-southeast1
 
 # 验证镜像
 gcloud container images list
@@ -360,7 +360,7 @@ gcloud container images list
 
 ```bash
 # 检查服务状态
-gcloud run services describe parse-api --region=asia-east1
+gcloud run services describe parse-api --region=australia-southeast1
 
 # 测试健康检查
 curl https://your-service-url.run.app/health

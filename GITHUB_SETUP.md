@@ -100,7 +100,7 @@ workflow 使用 Artifact Registry 推送镜像，需先手动创建一个仓库�
    - **格式**：Docker
    - **模式**：标准
    - **位置类型**：区域
-   - **区域**：asia-east1（与 workflow 里 `REGION` 一致）
+   - **区域**：australia-southeast1（悉尼，与 workflow 里 `REGION` 一致）
 5. 点击 **「创建」**
 
 完成后无需再改，之后每次部署都会往这个仓库推送镜像。
@@ -166,7 +166,7 @@ git push -u origin main
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
   SERVICE_NAME: parse-api  # 修改服务名称
-  REGION: asia-east1       # 修改部署区域
+  REGION: australia-southeast1  # 悉尼，可改为其他区域
 ```
 
 ### 修改资源配置
@@ -208,7 +208,7 @@ flags: |
 
 ```bash
 # 查看 Cloud Run 服务日志
-gcloud run services logs read parse-api --region=asia-east1 --limit=50
+gcloud run services logs read parse-api --region=australia-southeast1 --limit=50
 ```
 
 或者在 GCP Console 中：
@@ -236,18 +236,18 @@ bash deploy.sh
 
 ### 查看部署状态
 ```bash
-gcloud run services describe parse-api --region=asia-east1
+gcloud run services describe parse-api --region=australia-southeast1
 ```
 
 ### 查看实时流量
 ```bash
-gcloud run services logs tail parse-api --region=asia-east1
+gcloud run services logs tail parse-api --region=australia-southeast1
 ```
 
 ### 更新服务配置
 ```bash
 gcloud run services update parse-api \
-    --region=asia-east1 \
+    --region=australia-southeast1 \
     --memory=1Gi \
     --max-instances=20
 ```

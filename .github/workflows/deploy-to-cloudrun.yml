@@ -9,7 +9,7 @@ on:
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
   SERVICE_NAME: parse-api
-  REGION: asia-east1
+  REGION: australia-southeast1
   # Artifact Registry 仓库名（需在 GCP 控制台先创建，见 GITHUB_SETUP.md）
   AR_REPO: cloud-run
 

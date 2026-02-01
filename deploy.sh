@@ -6,7 +6,7 @@
 # 配置变量
 PROJECT_ID="your-project-id"  # 替换为你的 GCP 项目 ID
 SERVICE_NAME="parse-api"       # Cloud Run 服务名称
-REGION="asia-east1"            # 区域（可选择离你更近的区域）
+REGION="australia-southeast1"  # 悉尼区域
 IMAGE_NAME="gcr.io/${PROJECT_ID}/${SERVICE_NAME}"
 
 echo "开始部署到 Cloud Run..."
